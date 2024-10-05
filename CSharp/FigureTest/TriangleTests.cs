@@ -1,18 +1,13 @@
 ﻿using FigureLib.DefaultFigures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FigureTest
 {
     internal class TriangleTests
     {
-        [TestCase(5,4,8, 8.1815, 0.0001)]  //обычный треугольник
-        [TestCase(3,4,5, 6, 0)] // прямоугольный треугольник
-        [TestCase(5,5,8, 12, 0)]   //равнобедренный треугольник
-        [TestCase(3,3,3, 3.8971, 0.0001)]   // равносторонний треугольник
+        [TestCase(5, 4, 8, 8.1815, 0.0001)]  //обычный треугольник
+        [TestCase(3, 4, 5, 6, 0)] // прямоугольный треугольник
+        [TestCase(5, 5, 8, 12, 0)]   //равнобедренный треугольник
+        [TestCase(3, 3, 3, 3.8971, 0.0001)]   // равносторонний треугольник
         public void Area_ValidSides_ReturnsCorrectArea(double sideA, double sideB, double hypotenuse, double expected, double round)
         {
             var triangle = new Triangle(sideA, sideB, hypotenuse);
@@ -28,8 +23,8 @@ namespace FigureTest
         public void Area_ValidSides_IsRightTriangle(double sideA, double sideB, double hypotenuse, bool expected)
         {
             var triangle = new Triangle(sideA, sideB, hypotenuse);
-            
-            Assert.That(triangle.IsRightTriangle, Is.EqualTo(expected)); 
+
+            Assert.That(triangle.IsRightTriangle, Is.EqualTo(expected));
         }
 
         [Test]

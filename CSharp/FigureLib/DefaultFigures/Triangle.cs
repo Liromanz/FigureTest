@@ -1,17 +1,11 @@
 ﻿using FigureLib.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FigureLib.DefaultFigures
 {
     public record struct Triangle : ITriangle
     {
-        public double SideA {get;}
-        public double SideB {get;}
+        public double SideA { get; }
+        public double SideB { get; }
         public double Hypotenuse { get; }
 
         public Triangle(double sideA, double sideB, double hypotenuse)

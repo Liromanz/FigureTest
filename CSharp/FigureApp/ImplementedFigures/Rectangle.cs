@@ -1,9 +1,4 @@
 ﻿using FigureLib.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FigureTest.ImplementedFigures
 {
@@ -11,7 +6,7 @@ namespace FigureTest.ImplementedFigures
     {
         public double XSides { get; }
         public double YSides { get; }
-        
+
         public double Area => XSides * YSides;
 
         public Rectangle(double xSides, double ySides)
