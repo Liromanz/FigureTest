@@ -40,7 +40,12 @@ namespace FigureLib.DefaultFigures
             get
             {
                 double perimeter = (SideA + SideB + Hypotenuse) / 2;
-                return Math.Sqrt(perimeter * (perimeter - SideA) * (perimeter - SideB) * (perimeter - Hypotenuse));
+                double areaSquared = perimeter * (perimeter - SideA) * (perimeter - SideB) * (perimeter - Hypotenuse);
+
+                if (double.IsInfinity(areaSquared))
+                    throw new OverflowException("Переполнение при вычислении площади треугольника");
+                else
+                    return Math.Sqrt(areaSquared);
             }
         }
 

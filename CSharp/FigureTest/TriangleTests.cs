@@ -9,66 +9,47 @@ namespace FigureTest
 {
     internal class TriangleTests
     {
-        [Test]
-        public void Area_ValidSides_ReturnsCorrectArea() //обычный треугольник
+        [TestCase(5,4,8, 8.1815, 0.0001)]  //обычный треугольник
+        [TestCase(3,4,5, 6, 0)] // прямоугольный треугольник
+        [TestCase(5,5,8, 12, 0)]   //равнобедренный треугольник
+        [TestCase(3,3,3, 3.8971, 0.0001)]   // равносторонний треугольник
+        public void Area_ValidSides_ReturnsCorrectArea(double sideA, double sideB, double hypotenuse, double expected, double round)
         {
-            var triangle = new Triangle(5, 4, 8);
+            var triangle = new Triangle(sideA, sideB, hypotenuse);
             double area = triangle.Area;
 
-            Assert.IsFalse(triangle.IsRightTriangle);
-            Assert.That(area, Is.EqualTo(8.1815).Within(0.0001));
+            Assert.That(area, Is.EqualTo(expected).Within(round));
+        }
+
+        [TestCase(5, 4, 8, false)]  //обычный треугольник
+        [TestCase(3, 4, 5, true)] // прямоугольный треугольник
+        [TestCase(5, 5, 8, false)]   //равнобедренный треугольник
+        [TestCase(3, 3, 3, false)]   // равносторонний треугольник
+        public void Area_ValidSides_IsRightTriangle(double sideA, double sideB, double hypotenuse, bool expected)
+        {
+            var triangle = new Triangle(sideA, sideB, hypotenuse);
+            
+            Assert.That(triangle.IsRightTriangle, Is.EqualTo(expected)); 
         }
 
         [Test]
-        public void Area_ValidRightSides_ReturnsCorrectArea() // прямоугольный треугольник
+        public void Area_TooBigSides_ThrowsOverflowException()
         {
-            var triangle = new Triangle(3, 4, 5);
-            double area = triangle.Area;
+            var triangle = new Triangle(double.MaxValue, double.MaxValue, double.MaxValue);
 
-            Assert.IsTrue(triangle.IsRightTriangle); 
-            Assert.That(area, Is.EqualTo(6));
+            Assert.Throws<OverflowException>(() => { var area = triangle.Area; });
         }
 
-        [Test]
-        public void Area_ValidEqualSides_ReturnsCorrectArea() //равнобедренный треугольник
+        [TestCase(1, 2, 3)] // такого треугольника не может быть
+        [TestCase(1, 0, 5)] // одна сторона равна 0
+        [TestCase(-1, 4, 3)] // другая из сторон отрицательная
+        [TestCase(1, 1, -1)] // и третья сторона резко отрицательная
+        [TestCase(0, 0, 0)] // все стороны равны 0
+        [TestCase(-1, -2, -3)] // все стороны отрицательные
+        public void Constructor_InvalidSides_ThrowsArgumentException(double sideA, double sideB, double hypotenuse)
         {
-            var triangle = new Triangle(5, 5, 8);
-            double area = triangle.Area;
-
-            Assert.IsFalse(triangle.IsRightTriangle); 
-            Assert.That(area, Is.EqualTo(12));
+            Assert.Throws<ArgumentException>(() => new Triangle(sideA, sideB, hypotenuse));
         }
 
-        [Test]
-        public void Area_ValidAllEqualSides_ReturnsCorrectArea() // равносторонний треугольник
-        {
-            var triangle = new Triangle(3, 3, 3);
-            double area = triangle.Area;
-
-            Assert.IsFalse(triangle.IsRightTriangle); 
-            Assert.That(area, Is.EqualTo(3.8971).Within(0.0001));
-        }
-
-        [Test]
-        public void Constructor_InvalidSides_ThrowsArgumentException()
-        {
-            Assert.Throws<ArgumentException>(() => new Triangle(1, 2, 3)); // такого треугольника не может быть
-            Assert.Throws<ArgumentException>(() => new Triangle(1, 0, 5)); // одна сторона равна 0
-            Assert.Throws<ArgumentException>(() => new Triangle(-1, 4, 5)); // другая из сторон отрицательная
-            Assert.Throws<ArgumentException>(() => new Triangle(1, 1, -1)); // и третья сторона резко отрицательная
-        }
-
-        [Test]
-        public void Area_ZeroSides_ThrowsArgumentException()
-        {
-            Assert.Throws<ArgumentException>(() => new Triangle(0, 0, 0)); // все стороны равны 0
-        }
-
-
-        [Test]
-        public void Area_NegativeSides_ThrowsArgumentException()
-        {
-            Assert.Throws<ArgumentException>(() => new Triangle(-1, -2, -3)); // все стороны отрицательные
-        }
     }
 }
